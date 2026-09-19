@@ -18,12 +18,12 @@ OBJECTIVES
 
 PROJECT ARCHITECTURE
 
-User
-Selection Screen
-ZSO_FINAL
-ZCL_SO_ANALYTICS  
-Exception Analysis
-SALV ALV Output
+-User
+-Selection Screen
+-ZSO_FINAL
+-ZCL_SO_ANALYTICS  
+-Exception Analysis
+-SALV ALV Output
 
 TECHNOLOGIES / CONCEPTS USED
 
@@ -47,3 +47,32 @@ SAP Standard Tables
 
 VBAK — Sales Document: Header Data
 The main source of sales-order information is the standard SAP table VBAK.
+
+- Dynamic selection-screen based sales-order analysis
+- High-value order identification
+- Old-order identification
+- Exception analysis
+- Object-Oriented ABAP using reusable methods
+- Interactive ALV output using "CL_SALV_TABLE"
+
+ Main Components
+
+- Global Class: "ZCL_SO_ANALYTICS"
+- Main Program: "ZSO_FINAL"
+- Methods: "GET_SO", "ANALYZE_HIGH_VALUE", "ANALYZE_OLD_ORDERS", "BUILD_EXCEPTIONS"
+- DDIC Objects: Custom structures and table types for sales-order and exception data
+
+ Workflow
+
+Selection Screen
+      ↓
+Retrieve Sales Orders
+      ↓
+Analyze Orders
+      ↓
+Identify Exceptions
+      ↓
+Display Results in ALV
+
+
+
