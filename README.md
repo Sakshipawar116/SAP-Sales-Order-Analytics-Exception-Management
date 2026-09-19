@@ -64,15 +64,15 @@ The main source of sales-order information is the standard SAP table VBAK.
 
  Workflow
 
-Selection Screen
+- Selection Screen
       ↓
-Retrieve Sales Orders
+- Retrieve Sales Orders
       ↓
-Analyze Orders
+- Analyze Orders
       ↓
-Identify Exceptions
+- Identify Exceptions
       ↓
-Display Results in ALV
+- Display Results in ALV
 
 
 
