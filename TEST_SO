@@ -1,0 +1,25 @@
+*&---------------------------------------------------------------------*
+*& Report ZTEST_SO
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZTEST_SO.
+
+DATA : LO_ANALYTICS TYPE REF TO ZCL_SO_ANALYTICS,
+      IT_SALES TYPE ZSO_TT.
+
+CREATE OBJECT LO_ANALYTICS.
+
+LO_ANALYTICS->GET_SO(
+ EXPORTING
+   IP_VBELN = '0000000296'
+   IP_KUNNR = '0017100002'
+   IP_VKORG = '1710'
+   IP_AUART = 'TA'
+   IP_DATE_FROM = '20260101'
+   IP_DATE_TO = SY-DATUM
+   IMPORTING
+     ET_SO = IT_SALES
+ ).
+
+CL_DEMO_OUTPUT=>DISPLAY( IT_SALES ).

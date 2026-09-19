@@ -1,0 +1,44 @@
+  METHOD display_alv.
+    DATA lo_alv TYPE REF TO cl_salv_table.
+    DATA lt_alv TYPE zso_exception_tt.
+*    DATA LO_COLUMNS TYPE REF TO CL_SALV_COLUMNS_TABLE.
+*    DATA LO_COLUMN TYPE REF TO CL_SALV_COLUMN_TABLE.
+    lt_alv = it_exceptions.
+    IF lt_alv IS INITIAL.
+      MESSAGE 'NO SALES ORDERS FOUND' TYPE 'I'.
+      RETURN.
+    ENDIF.
+
+    TRY.
+
+        cl_salv_table=>factory( IMPORTING r_salv_table = lo_alv
+                                CHANGING  t_table      = lt_alv ).
+
+        lo_alv->get_functions( )->set_all( abap_true ).
+*
+*        lo_alv->get_columns( )->set_optimize( abap_true ).
+*        DATA(LO_COLUMN) = LO_COLUMNS->geT_COLUMNs>('EXCEPTION TYPE').
+*        lo_COLUMN->SET_SHORT_TEXT( 'TYPE').
+*        LO_COLUMN->SET_MEDIUM_TEST('EXCEPTION TYPE').
+*        LO_COLUMN->SET_LONG_TEST('EXCEPTION TYPE').
+*
+*        DATA(LO_COLUMN) = LO_COLUMNS->GET_COLUMN->('EXCEPTION REASON').
+*        lo_COLUMN->SET_SHORT_TEXT( 'REASON').
+*        LO_COLUMN->SET_MEDIUM_TEST('EXCEPTION REASON').
+*        LO_COLUMN->SET_LONG_TEST('EXCEPTION REASON').
+
+
+*        lo_alv->get_columns( )->get_column('EXCEPTION TYPE')->set_long_text( 'EXCEPTION TYPE' ).
+*        lo_alv->get_columns( )->get_column('EXCEPTION REASON')->set_long_text( 'EXCEPTION REASON' ).
+
+
+        lo_alv->display( ).
+*
+*      CATCH cx_salv_NOT_FOUND INTO DATA(lx_error).
+*        MESSAGE lx_error->get_text( ) TYPE 'E'.
+        CATCH cx_salv_MSG INTO DATA(lx_error2).
+        MESSAGE lx_error2->get_text( ) TYPE 'E'.
+    ENDTRY.
+
+
+  ENDMETHOD.

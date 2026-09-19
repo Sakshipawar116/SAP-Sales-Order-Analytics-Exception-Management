@@ -1,0 +1,19 @@
+  method ANAYLZE_OLD_ORDERS.
+    clear et_old_orders.
+    data(lv_cutoff_date) = sy-datum - ip_days.
+    select
+      vbeln,kunnr,erdat,auart,vkorg,netwr,waerk
+      from vbak where erdat < @lv_cutoff_date into table @data(it_old_orders).
+
+      loop at it_old_orders into data(ls_old_order).
+
+        append value #( vbeln = ls_old_order-vbeln
+       kunnr = ls_old_order-kunnr
+        erdat = ls_old_order-erdat
+        auart = ls_old_order-auart
+        vkorg = ls_old_order-vkorg
+        netwr = ls_old_order-netwr
+        waerk = ls_old_order-waerk )
+        to et_old_orders.
+        endloop.
+  endmethod.

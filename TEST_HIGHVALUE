@@ -1,0 +1,20 @@
+*&---------------------------------------------------------------------*
+*& Report ZTEST_HIGHVALUE
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZTEST_HIGHVALUE.
+data: lo_analytics TYPE REF TO zcl_so_analytics,
+      it_sales type zso_tt,
+      it_high_value type zso_value_tt.
+
+create OBJECT lo_analytics.
+
+lo_analytics->analyze_high_value(
+exporting
+  it_so = it_sales
+  ip_threshold = '10000'
+  importing
+    et_high_value = it_high_value ).
+
+cl_demo_output=>display( it_high_value ).

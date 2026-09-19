@@ -1,0 +1,17 @@
+*&---------------------------------------------------------------------*
+*& Report ZTEST_OLD_ORDERS
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZTEST_OLD_ORDERS.
+
+data : lo_analytics type REF TO zcl_so_analytics,
+it_old_orders type zso_old_tt.
+
+create object lo_analytics.
+lo_analytics->anaylze_old_orders(
+Exporting
+  ip_days = 30
+  importing et_old_orders = it_old_orders ).
+
+cl_demo_output=>display( it_old_orders ).

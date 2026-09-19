@@ -1,0 +1,19 @@
+*&---------------------------------------------------------------------*
+*& Report ZTEST_FINAL_ALV
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZTEST_FINAL_ALV.
+
+data : lo_analytics TYPE REF TO zcl_so_analytics,
+      lt_exceptions type zso_exception_tt.
+create object lo_analytics.
+
+lo_analytics->build_exceptions(
+EXPORTING ip_threshold = '100000'
+  ip_days = 30
+  IMPORTING
+    et_exceptions = lt_exceptions ).
+
+lo_analytics->display_alv(
+EXPORTING it_exceptions = lt_exceptions ).

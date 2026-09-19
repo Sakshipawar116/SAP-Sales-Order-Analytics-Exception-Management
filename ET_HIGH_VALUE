@@ -1,0 +1,24 @@
+  METHOD analyze_high_value.
+    CLEAR et_high_value.
+
+    SELECT vbeln,
+      kunnr,
+      erdat,
+      auart,vkorg,
+      netwr,
+      waerk
+      FROM vbak
+      WHERE netwr > @ip_threshold INTO TABLE @DATA(it_vbak).
+
+    LOOP AT it_vbak INTO DATA(ls_vbak).
+      APPEND VALUE #(
+         vbeln = ls_vbak-vbeln
+         kunnr = ls_vbak-kunnr
+         erdat = ls_vbak-erdat
+         auart = ls_vbak-auart
+         vkorg = ls_vbak-vkorg
+         netwr = ls_vbak-netwr
+         waerk = ls_vbak-waerk )
+         TO et_high_value.
+    ENDLOOP.
+  ENDMETHOD.

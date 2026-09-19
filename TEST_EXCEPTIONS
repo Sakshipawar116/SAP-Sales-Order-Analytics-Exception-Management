@@ -1,0 +1,20 @@
+*&---------------------------------------------------------------------*
+*& Report ZTEST_EXCEPTIONS
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZTEST_EXCEPTIONS.
+
+DATA : LO_ANALYTICS TYPE REF TO ZCL_SO_ANALYTICS,
+      IT_EXCEPTIONS TYPE ZSO_EXCEPTION_TT.
+
+CREATE OBJECT LO_ANALYTICS.
+
+LO_ANALYTICS->BUILD_EXCEPTIONS(
+EXPORTING
+  IP_THRESHOLD = '100000'
+  IP_DAYS = 30
+  IMPORTING
+    ET_EXCEPTIONS = IT_EXCEPTIONS ).
+
+CL_DEMO_OUTPUT=>DISPLAY( IT_EXCEPTIONS ).

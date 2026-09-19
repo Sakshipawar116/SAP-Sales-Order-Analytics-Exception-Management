@@ -1,0 +1,54 @@
+*&---------------------------------------------------------------------*
+*& Report ZSO_FINAL
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zso_final.
+SELECTION-SCREEN BEGIN OF BLOCK bk1 WITH FRAME TITLE t1.
+
+  PARAMETERS : p_datefr TYPE vbak-erdat DEFAULT '20260101',
+               p_dateto TYPE vbak-erdat DEFAULT sy-datum,
+               p_kunnr  TYPE kunnr,
+               p_vkorg  TYPE vkorg,
+               p_auart  TYPE auart,
+               p_thresh TYPE vbak-netwr DEFAULT '100000',
+               p_days   TYPE i DEFAULT 30.
+
+SELECTION-SCREEN END OF BLOCK bk1.
+
+DATA : lo_analytics    TYPE REF TO zcl_so_analytics,
+       lt_sales_orders TYPE zso_tt,
+       lt_exceptions   TYPE zso_exception_tt.
+
+INITIALIZATION.
+  t1 = 'SELECT SALES ORDER CRITERIA'.
+
+START-OF-SELECTION .
+
+  CREATE OBJECT lo_analytics.
+
+*call get_so
+  lo_analytics->get_so(
+    EXPORTING
+      ip_vbeln     = ''
+      ip_kunnr     = p_kunnr
+      ip_vkorg     = p_vkorg
+      ip_auart     = p_auart
+      ip_date_from = p_datefr
+      ip_date_to   = p_dateto
+    IMPORTING
+      et_so        = lt_sales_orders ).
+
+*call build exception
+  lo_analytics->build_exceptions(
+    EXPORTING
+      it_sales_orders = lt_sales_orders
+      ip_threshold    = p_thresh
+      ip_days         = p_days
+    IMPORTING
+      et_exceptions   = lt_exceptions ).
+
+*call display_alv
+  lo_analytics->display_alv(
+    EXPORTING
+      it_exceptions = lt_exceptions ).

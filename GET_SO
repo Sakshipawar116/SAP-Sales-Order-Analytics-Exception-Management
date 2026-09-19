@@ -1,0 +1,44 @@
+METHOD get_so.
+
+  CLEAR et_so.
+
+  SELECT vbeln,
+         erdat,
+         auart,
+         vkorg,
+         vtweg,
+         spart,
+         kunnr,
+         netwr,
+         waerk,
+         ernam,
+         vbtyp
+    FROM vbak
+    INTO CORRESPONDING FIELDS OF TABLE @et_so
+    WHERE erdat BETWEEN @ip_date_from AND @ip_date_to.
+
+  IF ip_kunnr IS NOT INITIAL.
+
+    DELETE et_so WHERE kunnr <> ip_kunnr.
+
+  ENDIF.
+
+  IF ip_vkorg IS NOT INITIAL.
+
+    DELETE et_so WHERE vkorg <> ip_vkorg.
+
+  ENDIF.
+
+  IF ip_auart IS NOT INITIAL.
+
+    DELETE et_so WHERE auart <> ip_auart.
+
+  ENDIF.
+
+  IF ip_vbeln IS NOT INITIAL.
+
+    DELETE et_so WHERE vbeln <> ip_vbeln.
+
+  ENDIF.
+
+ENDMETHOD.

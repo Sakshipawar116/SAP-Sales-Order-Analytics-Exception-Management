@@ -1,0 +1,125 @@
+  METHOD build_exceptions.
+    CLEAR et_exceptions.
+
+    DATA lv_cutoff_date TYPE vbak-erdat.
+    DATA lt_exceptions TYPE zso_exception_tt.
+    lv_cutoff_date = sy-datum - ip_days.
+
+
+*    DATA(lv_cutoff_date) = sy-datum - ip_days.
+*    SELECT vbeln,kunnr,auart,erdat,netwr,waerk
+*      FROM vbak WHERE netwr > @ip_threshold OR erdat < @lv_cutoff_date
+*      INTO TABLE @DATA(it_exceptions).
+
+    LOOP AT it_sales_orderS ASSIGNING FIELD-SYMBOL(<ls_order>).
+
+      IF <ls_order>-netwr > ip_threshold
+      OR <ls_order>-erdat < lv_cutoff_date.
+
+        APPEND VALUE #(
+        vbeln = <ls_order>-vbeln
+        kunnr = <ls_order>-kunnr
+        VKORG = <LS_ORDER>-VKORG
+        auart = <ls_order>-auart
+        erdat = <ls_order>-erdat
+        netwr = <ls_order>-netwr
+        waerk = <ls_order>-waerk
+        ) TO lt_exceptions.
+
+      ENDIF.
+    ENDLOOP.
+
+    LOOP AT lt_exceptions ASSIGNING FIELD-SYMBOL(<ls_exception>).
+      IF <ls_exception>-netwr > ip_threshold
+          AND <ls_exception>-erdat < lv_cutoff_date.
+        <ls_exception>-exception_type = 'HIGH VALUE + OLD'.
+        <ls_exception>-exception_reason = 'ORDER EXCEEDS VALUE THRESHOLD AND IS OLDER THAN ALLOWED DAYS'.
+
+      ELSEIF <ls_exception>-netwr > ip_threshold.
+
+        <ls_exception>-exception_type = 'HIGH VALUE'.
+        <ls_exception>-exception_reason = 'ORDER EXCEEDS VALUE THRESHOLD'.
+
+      ELSE.
+        <ls_exception>-exception_type = 'OLD ORDER'.
+        <ls_exception>-exception_reason = 'ORDER IS OLDER THAN CONFIGURED DAYS'.
+
+      ENDIF.
+    ENDLOOP.
+
+    et_exceptions = lt_exceptions.
+
+  ENDMETHOD.
+
+
+
+*      DATA(ls_output) = VALUE zso_exception_st(
+*      vbeln = ls_exception-vbeln
+*      kunnr = ls_exception-kunnr
+*      auart = ls_exception-auart
+*      erdat = ls_exception-erdat
+*      netwr = ls_exception-netwr
+*      waerk = ls_exception-waerk ).
+*
+*      IF ls_exception-netwr > ip_threshold
+*        AND ls_exception-erdat < lv_cutoff_date.
+*
+*        ls_output-exception_type = 'HIGH VALUE + OLD'.
+*        ls_output-exception_reason = 'ORDER EXCEEDS VALUE THRESHOLD AND IS OLDER THAN ALLOWED DAYS'.
+*
+*      ELSEIF ls_exception-netwr > ip_threshold.
+*
+*        ls_output-exception_type = 'HIGH VALUE'.
+*        ls_output-exception_reason = 'ORDER EXCEEDS VALUE THRESHOLD'.
+*
+*      ELSE.
+*        APPEND ls_output TO et_exceptions.
+*    ENDIF.
+*    ENDLOOP.
+
+*    LOOP AT it_exceptions ASSIGNING FIELD-SYMBOL(<ls_exception>).
+*
+*      IF <ls_exception>-netwr > ip_threshold
+*         AND <ls_exception>-erdat < lv_cutoff_date.
+*
+*        APPEND VALUE #(
+*          vbeln            = <ls_exception>-vbeln
+*          kunnr            = <ls_exception>-kunnr
+*          auart            = <ls_exception>-auart
+*          erdat            = <ls_exception>-erdat
+*          netwr            = <ls_exception>-netwr
+*          waerk            = <ls_exception>-waerk
+*          exception_type   = 'HIGH VALUE + OLD'
+*          exception_reason = 'Order exceeds value threshold and is older than allowed days'
+*        ) TO et_exceptions.
+*
+*      ELSEIF <ls_exception>-netwr > ip_threshold.
+*
+*        APPEND VALUE #(
+*          vbeln            = <ls_exception>-vbeln
+*          kunnr            = <ls_exception>-kunnr
+*          auart            = <ls_exception>-auart
+*          erdat            = <ls_exception>-erdat
+*          netwr            = <ls_exception>-netwr
+*          waerk            = <ls_exception>-waerk
+*          exception_type   = 'HIGH VALUE'
+*          exception_reason = 'Order value exceeds configured threshold'
+*        ) TO et_exceptions.
+*
+*      ELSE.
+*
+*        APPEND VALUE #(
+*          vbeln            = <ls_exception>-vbeln
+*          kunnr            = <ls_exception>-kunnr
+*          auart            = <ls_exception>-auart
+*          erdat            = <ls_exception>-erdat
+*          netwr            = <ls_exception>-netwr
+*          waerk            = <ls_exception>-waerk
+*          exception_type   = 'OLD ORDER'
+*          exception_reason = 'Order is older than configured number of days'
+*        ) TO et_exceptions.
+*
+*      ENDIF.
+*
+*    ENDLOOP.
+*  ENDMETHOD.

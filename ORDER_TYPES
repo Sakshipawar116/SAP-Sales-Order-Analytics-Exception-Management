@@ -1,0 +1,11 @@
+  method ANAYLZE_ORDER_TYPES.
+    clear et_order_types.
+
+    select auart,
+      count(  * ) as order_count
+      from vbak where erdat between @ip_date_from and @ip_date_to
+      group by auart
+      into table @et_order_types.
+
+
+  endmethod.

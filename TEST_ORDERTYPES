@@ -1,0 +1,18 @@
+*&---------------------------------------------------------------------*
+*& Report ZTEST_ORDER_TYPES
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZTEST_ORDER_TYPES.
+
+data : lo_analytics type REF TO zcl_so_analytics,
+      it_order_types type zso_type_tt.
+create object lo_analytics.
+
+lo_analytics->anaylze_order_types(
+exporting ip_date_from = '20260101'
+  ip_date_to = sy-datum
+  importing
+    et_order_types = it_order_types ).
+
+cl_demo_output=>display( it_order_types ).
