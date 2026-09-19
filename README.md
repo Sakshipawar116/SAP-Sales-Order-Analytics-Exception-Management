@@ -18,12 +18,12 @@ OBJECTIVES
 
 PROJECT ARCHITECTURE
 
--User
--Selection Screen
--ZSO_FINAL
--ZCL_SO_ANALYTICS  
--Exception Analysis
--SALV ALV Output
+- User
+- Selection Screen
+- ZSO_FINAL
+- ZCL_SO_ANALYTICS  
+- Exception Analysis
+- SALV ALV Output
 
 TECHNOLOGIES / CONCEPTS USED
 
